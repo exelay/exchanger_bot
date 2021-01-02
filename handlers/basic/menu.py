@@ -4,8 +4,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher.filters.builtin import Command
 
 from loader import dp
-from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard, \
-    features_keyboard, feature_keyboard
+from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard
 
 
 @dp.message_handler(Command('menu'))
@@ -27,11 +26,6 @@ async def list_subcategories(callback: CallbackQuery, category, **kwargs):
     await callback.message.edit_reply_markup(markup)
 
 
-async def list_features(callback: CallbackQuery, category, subcategory, **kwargs):
-    markup = await features_keyboard(category, subcategory)
-    await callback.message.edit_text(text="Смотри, что у нас есть", reply_markup=markup)
-
-
 @dp.callback_query_handler(menu_cd.filter())
 async def navigate(call: CallbackQuery, callback_data: dict):
     current_level = callback_data.get("level")
@@ -42,7 +36,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
     levels = {
         "0": list_categories,
         "1": list_subcategories,
-        "2": list_features,
     }
     current_level_function = levels[current_level]
     await current_level_function(
