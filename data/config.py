@@ -18,4 +18,8 @@ ALLOWED_USERS: List[int] = [
     305516197,
 ]
 
+ADMINS: List[int] = [
+    305516197,
+]
+
 POSTGRES_URI = f"postgresql://{PG_USER}:{PG_PASSWORD}@{DB_HOST}/{DATABASE}"
