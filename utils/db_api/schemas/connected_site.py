@@ -1,6 +1,6 @@
 from sqlalchemy import BigInteger, String, Column, sql
 
-from utils.db_api.db_gino import TimedBaseModel
+from utils.db_api.db_gino import db, TimedBaseModel
 
 
 class ConnectedSite(TimedBaseModel):
@@ -11,6 +11,6 @@ class ConnectedSite(TimedBaseModel):
     site_name = Column(String(255))
     hmac_key = Column(String(255))
     hmac_secret = Column(String(255))
-    user_id = Column(BigInteger)
+    user_id = Column(BigInteger, db.Foreign_key('users.id'))
 
     query: sql.Select
