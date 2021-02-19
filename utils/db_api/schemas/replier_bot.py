@@ -11,6 +11,6 @@ class ReplierBot(TimedBaseModel):
     user_id = Column(BigInteger, db.ForeignKey('users.id'))
     reply_message = Column(String(1000))
     working = Column(Boolean())
-    account_id = Column(String(255), db.ForeignKey('connected_sites.id'))
+    account_id = Column(String(255), db.ForeignKey('accounts.id'))
 
     query: sql.Select
