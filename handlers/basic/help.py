@@ -10,4 +10,4 @@ from utils.misc import rate_limit
 @rate_limit(5, 'help')
 @dp.message_handler(CommandHelp())
 async def help_command(message: types.Message):
-    await message.answer(MESSAGES['help'])
+    await message.answer(MESSAGES.help)

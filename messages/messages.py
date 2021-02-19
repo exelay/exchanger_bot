@@ -1,3 +1,13 @@
+from collections import namedtuple
+
+
+MessagesTemplate = namedtuple('Message', [
+    'hello',
+    'not_hello',
+    'help',
+])
+
+
 msg_hello = (
     "Привет, {name}!\n"
     "Если ты читаешь это сообщение, значит ты находишься в списке авторизованных пользователей.\n"
@@ -40,8 +50,8 @@ msg_help = (
     "<b>Вкл / Выкл</b> - Тот же принцип, что и с удалением, но включает и отключает объявления.\n"
 )
 
-MESSAGES = {
-    'hello': msg_hello,
-    'not_hello': msg_not_hello,
-    'help': msg_help,
-}
+MESSAGES = MessagesTemplate(
+    msg_hello,
+    msg_not_hello,
+    msg_help
+)

@@ -18,7 +18,7 @@ async def start_command(message: types.Message):
     if user in ALLOWED_USERS:
         logger.info(f"User {user}({user_name}) successfully added with role {user_role}.")
         await commands.add_user(id_=user, name=user_name, role=user_role)
-        await message.answer(MESSAGES['hello'].format(name=user_name))
+        await message.answer(MESSAGES.hello.format(name=user_name))
     else:
         logger.info(f"User {user}({user_name}) is not an allowed user")
-        await message.answer(MESSAGES['not_hello'].format(name=user_name))
+        await message.answer(MESSAGES.not_hello.format(name=user_name))
