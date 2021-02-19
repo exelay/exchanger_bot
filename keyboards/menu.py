@@ -32,7 +32,7 @@ def make_callback_data(level, category="0", subcategory="0"):
 async def categories_keyboard():
     current_level = 0
 
-    markup = InlineKeyboardMarkup()
+    markup = InlineKeyboardMarkup(row_width=1)
     for category, text in categories:
         callback_data = make_callback_data(level=current_level + 1, category=category)
         markup.insert(
