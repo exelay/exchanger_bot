@@ -19,5 +19,7 @@ async def add_account(user_id: int, name: str, hmac_key: str, hmac_secret: str):
         id_ = uuid.uuid4().__str__()
         account = Account(id=id_, name=name, user_id=user_id, hmac_key=hmac_key, hmac_secret=hmac_secret)
         await account.create()
+    except UniqueViolationError:
+        raise ValueError
     except Exception as e:
-        logger.error(str(e))
+        logger.error(f"Unexpected error: {e}")

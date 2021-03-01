@@ -47,14 +47,16 @@ async def get_hmac_secret(message: Message, state: FSMContext):
     data = await state.get_data()
 
     if await account_is_valid(data):
-
-        await add_account(
-            user_id=user_id,
-            name=data['name'],
-            hmac_key=data['hmac_key'],
-            hmac_secret=data['hmac_secret']
-        )
-        await message.answer("Аккаунт успешно привязан")
+        try:
+            await add_account(
+                user_id=user_id,
+                name=data['name'],
+                hmac_key=data['hmac_key'],
+                hmac_secret=data['hmac_secret']
+            )
+            await message.answer("Аккаунт успешно привязан!")
+        except ValueError:
+            await message.answer("Аккаунт с такими ключами уже привязан.")
     else:
         await message.answer("Не удалось привязать аккаунт. Проверьте правильность ключей и попробуйте заново.")
     await state.finish()
