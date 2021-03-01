@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
 
-menu_cd = CallbackData("show_menu", "level", "category", "subcategory")
+menu_cd = CallbackData("show_menu", "level", "category", "subcategory", "action")
 
 categories = (
     ('accounts', '🎛 Аккаунты'),
@@ -32,17 +32,14 @@ subcategories = {
 }
 
 
-def make_callback_data(level, category="0", subcategory="0"):
-    return menu_cd.new(level=level, category=category, subcategory=subcategory)
+def make_callback_data(level, category="0", subcategory="0", action="0"):
+    return menu_cd.new(level=level, category=category, subcategory=subcategory, action=action)
 
 
 async def categories_keyboard():
     current_level = 0
 
     markup = InlineKeyboardMarkup(row_width=1)
-    markup.insert(
-        InlineKeyboardButton(text='🔗 Привязать аккаунт', callback_data='add_account')
-    )
     for category, text in categories:
         callback_data = make_callback_data(level=current_level + 1, category=category)
         markup.insert(

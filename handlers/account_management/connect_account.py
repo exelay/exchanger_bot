@@ -1,5 +1,5 @@
 from loguru import logger
-from localbitcoins_sdk.localbitcoins_sdk import LBClient
+from localbitcoins_sdk import LBClient
 
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, Message
@@ -8,7 +8,6 @@ from loader import dp
 from states import AccountData
 from utils.db_api.quick_commands import add_account
 from utils.db_api.schemas import Account
-from handlers.basic.menu import list_categories
 from keyboards.cancel_buttons import cancel_markup
 
 
@@ -59,13 +58,6 @@ async def get_hmac_secret(message: Message, state: FSMContext):
     else:
         await message.answer("Не удалось привязать аккаунт. Проверьте правильность ключей и попробуйте заново.")
     await state.finish()
-
-
-@dp.callback_query_handler(text='cancel_adding_account',
-                           state=[AccountData.name, AccountData.hmac_key, AccountData.hmac_secret])
-async def cancel_adding_account(callback: CallbackQuery, state: FSMContext):
-    await state.finish()
-    await list_categories(callback)
 
 
 async def name_is_free(name, user_id) -> bool:

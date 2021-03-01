@@ -4,6 +4,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher.filters.builtin import Command
 
 from loader import dp
+from handlers.account_management.connect_account import add_account_handler
 from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard
 
 
@@ -26,21 +27,36 @@ async def list_subcategories(callback: CallbackQuery, category, **kwargs):
     await callback.message.edit_reply_markup(markup)
 
 
+async def select_action(callback: CallbackQuery, subcategory, **kwargs):
+    actions = {
+        'add_account': add_account_handler,
+        'my_accounts': None,
+        'update_account': None,
+        'remove_account': None,
+    }
+    await actions[subcategory](callback)
+
+
 @dp.callback_query_handler(menu_cd.filter())
 async def navigate(call: CallbackQuery, callback_data: dict):
     current_level = callback_data.get("level")
     category = callback_data.get("category")
     subcategory = callback_data.get("subcategory")
-    feature_id = callback_data.get("item_id")
+    action = callback_data.get("action")
 
+    print(callback_data)
     levels = {
         "0": list_categories,
         "1": list_subcategories,
+        "2": select_action,
     }
-    current_level_function = levels[current_level]
-    await current_level_function(
-        call,
-        category=category,
-        subcategory=subcategory,
-        feature_id=feature_id
-    )
+    current_level_function = levels.get(current_level)
+    try:
+        await current_level_function(
+            call,
+            category=category,
+            subcategory=subcategory,
+            action=action
+        )
+    except TypeError:
+        pass
