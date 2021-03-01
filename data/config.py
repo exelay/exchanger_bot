@@ -16,6 +16,7 @@ ip = os.getenv('ip')
 # List of allowed users
 ALLOWED_USERS: List[int] = [
     305516197,
+    1254677485,
 ]
 
 ADMINS: List[int] = [

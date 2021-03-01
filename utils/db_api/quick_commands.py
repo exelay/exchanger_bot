@@ -28,3 +28,8 @@ async def add_account(user_id: int, name: str, hmac_key: str, hmac_secret: str):
 async def select_user_accounts(user_id: int):
     accounts = await Account.query.where(Account.user_id == user_id).gino.all()
     return accounts
+
+
+async def delete_account(name: str):
+    account = await Account.query.where(Account.name == name).gino.first()
+    await account.delete()

@@ -6,6 +6,7 @@ from aiogram.dispatcher.filters.builtin import Command
 from loader import dp
 from handlers.account_management.connect_account import add_account_handler
 from handlers.account_management.list_accounts import list_accounts
+from handlers.account_management.disconnect_account import disconnect_account
 from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard
 
 
@@ -33,7 +34,7 @@ async def select_action(callback: CallbackQuery, subcategory, **kwargs):
         'add_account': add_account_handler,
         'my_accounts': list_accounts,
         'update_account': None,
-        'remove_account': None,
+        'remove_account': disconnect_account,
     }
     await actions[subcategory](callback)
 
@@ -45,7 +46,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
     subcategory = callback_data.get("subcategory")
     action = callback_data.get("action")
 
-    print(callback_data)
     levels = {
         "0": list_categories,
         "1": list_subcategories,
