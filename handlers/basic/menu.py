@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.builtin import Command
 
 from loader import dp
 from handlers.account_management.connect_account import add_account_handler
+from handlers.account_management.list_accounts import list_accounts
 from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard
 
 
@@ -30,7 +31,7 @@ async def list_subcategories(callback: CallbackQuery, category, **kwargs):
 async def select_action(callback: CallbackQuery, subcategory, **kwargs):
     actions = {
         'add_account': add_account_handler,
-        'my_accounts': None,
+        'my_accounts': list_accounts,
         'update_account': None,
         'remove_account': None,
     }

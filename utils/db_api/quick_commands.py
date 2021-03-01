@@ -23,3 +23,8 @@ async def add_account(user_id: int, name: str, hmac_key: str, hmac_secret: str):
         raise ValueError
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
+
+
+async def select_user_accounts(user_id: int):
+    accounts = await Account.query.where(Account.user_id == user_id).gino.all()
+    return accounts

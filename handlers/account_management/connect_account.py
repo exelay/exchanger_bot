@@ -11,7 +11,6 @@ from utils.db_api.schemas import Account
 from keyboards.cancel_buttons import cancel_markup
 
 
-@dp.callback_query_handler(text='add_account')
 async def add_account_handler(callback: CallbackQuery):
     user_id = callback.from_user.id
     text = (
