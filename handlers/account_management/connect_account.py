@@ -64,7 +64,7 @@ async def get_hmac_secret(message: Message, state: FSMContext):
     await state.finish()
 
 
-async def name_is_free(name, user_id) -> bool:
+async def name_is_free(name, user_id) -> bool:  # TODO добавить валидацию имени аккаунта
     account = await Account.query.where(Account.name == name and Account.user_id == user_id).gino.first()
     if account:
         return False
