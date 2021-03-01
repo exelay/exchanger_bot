@@ -12,12 +12,12 @@ from keyboards.cancel_buttons import cancel_markup
 
 
 async def add_account_handler(callback: CallbackQuery):
-    user_id = callback.from_user.id
     text = (
         "Укажите имя аккаунта\n"
         "(имя должно быть уникальным, оно предназначено для поиска нужного аккаунта в БД):"
     )
-    await dp.bot.send_message(user_id, text, reply_markup=cancel_markup)
+    await callback.message.edit_text(text)
+    await callback.message.edit_reply_markup(cancel_markup)
     await AccountData.name.set()
 
 

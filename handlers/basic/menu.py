@@ -21,11 +21,13 @@ async def list_categories(message: Union[CallbackQuery, Message], **kwargs):
         await message.answer("⚙️ Main menu", reply_markup=markup)
     elif isinstance(message, CallbackQuery):
         call = message
+        await call.message.edit_text("⚙️ Main menu")
         await call.message.edit_reply_markup(markup)
 
 
 async def list_subcategories(callback: CallbackQuery, category, **kwargs):
     markup = await subcategories_keyboard(category)
+    await callback.message.edit_text("⚙️ Main menu")
     await callback.message.edit_reply_markup(markup)
 
 
