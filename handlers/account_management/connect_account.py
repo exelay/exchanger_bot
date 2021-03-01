@@ -9,6 +9,7 @@ from states import AccountData
 from utils.db_api.quick_commands import add_account
 from utils.db_api.schemas import Account
 from keyboards.cancel_buttons import cancel_markup
+from keyboards.menu import categories_keyboard
 
 
 async def add_account_handler(callback: CallbackQuery):
@@ -54,6 +55,8 @@ async def get_hmac_secret(message: Message, state: FSMContext):
                 hmac_secret=data['hmac_secret']
             )
             await message.answer("Аккаунт успешно привязан!")
+            markup = await categories_keyboard()
+            await dp.bot.send_message(user_id, "⚙️ Main menu", reply_markup=markup)
         except ValueError:
             await message.answer("Аккаунт с такими ключами уже привязан.")
     else:

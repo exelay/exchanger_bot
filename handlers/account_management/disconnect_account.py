@@ -3,6 +3,7 @@ from aiogram.types import CallbackQuery
 from loader import dp
 from utils.db_api.quick_commands import delete_account
 from keyboards.accounts import user_accounts_markup, delete_account_cd, selection_buttons_markup
+from keyboards.menu import subcategories_keyboard
 
 
 async def disconnect_account(callback: CallbackQuery):
@@ -40,8 +41,12 @@ async def show_selection_buttons(callback: CallbackQuery, account, **kwargs):
 
 
 async def select_action(callback: CallbackQuery, account, action):
+    user_id = callback.from_user.id
     if action == 'delete':
         await delete_account(account)
-        await callback.answer("Аккаунт успешно отвязан!")
+        await dp.bot.send_message(user_id, "Аккаунт успешно отвязан!")
+        markup = await subcategories_keyboard(category='accounts')
+        await callback.message.edit_text("⚙️ Main menu")
+        await callback.message.edit_reply_markup(markup)
     elif action == 'cancel':
         await disconnect_account(callback)
