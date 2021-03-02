@@ -30,6 +30,11 @@ async def select_user_accounts(user_id: int):
     return accounts
 
 
-async def delete_account(name: str):
-    account = await Account.query.where(Account.name == name).gino.first()
+async def delete_account(user_id, name: str):
+    account = await Account.query.where(Account.name == name, Account.user_id == user_id).gino.first()
     await account.delete()
+
+
+async def update_account_keys(user_id, name, hmac_key, hmac_secret):
+    account = await Account.query.where(Account.name == name, Account.user_id == user_id).gino.first()
+    account.update(hmac_key=hmac_key, hmac_secret=hmac_secret).apply()

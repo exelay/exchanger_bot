@@ -4,9 +4,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher.filters.builtin import Command
 
 from loader import dp
-from handlers.account_management.connect_account import add_account_handler
-from handlers.account_management.list_accounts import list_accounts
-from handlers.account_management.disconnect_account import disconnect_account
+from handlers.account_management import add_account_handler, list_accounts, disconnect_account
 from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard
 
 
@@ -35,7 +33,6 @@ async def select_action(callback: CallbackQuery, subcategory, **kwargs):
     actions = {
         'add_account': add_account_handler,
         'my_accounts': list_accounts,
-        'update_account': None,
         'remove_account': disconnect_account,
     }
     await actions[subcategory](callback)

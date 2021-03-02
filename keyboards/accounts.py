@@ -5,11 +5,11 @@ from utils.db_api.quick_commands import select_user_accounts
 from .menu import menu_cd
 
 
-delete_account_cd = CallbackData("delete_account", "level", "account", "action")
+accounts_cd = CallbackData("accounts", "level", "account", "action")
 
 
 def make_callback_data(level, account="0", action="0"):
-    return delete_account_cd.new(level=level, account=account, action=action)
+    return accounts_cd.new(level=level, account=account, action=action)
 
 
 selection_buttons = (

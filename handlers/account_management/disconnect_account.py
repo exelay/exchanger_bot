@@ -2,7 +2,7 @@ from aiogram.types import CallbackQuery
 
 from loader import dp
 from utils.db_api.quick_commands import delete_account
-from keyboards.accounts import user_accounts_markup, delete_account_cd, selection_buttons_markup
+from keyboards.accounts import user_accounts_markup, accounts_cd, selection_buttons_markup
 from keyboards.menu import subcategories_keyboard
 
 
@@ -13,7 +13,7 @@ async def disconnect_account(callback: CallbackQuery):
     await callback.message.edit_reply_markup(markup)
 
 
-@dp.callback_query_handler(delete_account_cd.filter())
+@dp.callback_query_handler(accounts_cd.filter())
 async def navigate(call: CallbackQuery, callback_data: dict):
     current_level = callback_data.get("level")
     account = callback_data.get("account")
@@ -43,7 +43,7 @@ async def show_selection_buttons(callback: CallbackQuery, account, **kwargs):
 async def select_action(callback: CallbackQuery, account, action):
     user_id = callback.from_user.id
     if action == 'delete':
-        await delete_account(account)
+        await delete_account(user_id, account)
         await dp.bot.send_message(user_id, "Аккаунт успешно отвязан!")
         markup = await subcategories_keyboard(category='accounts')
         await callback.message.edit_text("⚙️ Main menu")
