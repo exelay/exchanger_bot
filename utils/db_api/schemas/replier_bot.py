@@ -7,10 +7,10 @@ class ReplierBot(TimedBaseModel):
 
     __tablename__ = 'replier_bots'
 
-    id = Column(BigInteger, primary_key=True)
+    name = Column(String(255), primary_key=True)
     user_id = Column(BigInteger, db.ForeignKey('users.id'))
-    reply_message = Column(String(1000))
+    payment_info = Column(String(1000))
     working = Column(Boolean())
-    account_id = Column(String(255), db.ForeignKey('accounts.id'))
+    account_name = Column(String(255), db.ForeignKey('accounts.name'))
 
     query: sql.Select

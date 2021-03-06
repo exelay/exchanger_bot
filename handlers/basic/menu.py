@@ -5,6 +5,7 @@ from aiogram.dispatcher.filters.builtin import Command
 
 from loader import dp
 from handlers.account_management import add_account_handler, list_accounts, disconnect_account
+from handlers.replier_managment import list_replier_accounts
 from keyboards.menu import menu_cd, categories_keyboard, subcategories_keyboard
 
 
@@ -34,6 +35,7 @@ async def select_action(callback: CallbackQuery, subcategory, **kwargs):
         'add_account': add_account_handler,
         'my_accounts': list_accounts,
         'remove_account': disconnect_account,
+        'my_repliers': list_replier_accounts,
     }
     await actions[subcategory](callback)
 

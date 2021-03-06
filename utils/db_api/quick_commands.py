@@ -30,6 +30,10 @@ async def select_user_accounts(user_id: int):
     return accounts
 
 
+async def select_account_repliers(user_id, account_name):
+    pass
+
+
 async def delete_account(user_id, name: str):
     account = await Account.query.where(Account.name == name, Account.user_id == user_id).gino.first()
     await account.delete()
