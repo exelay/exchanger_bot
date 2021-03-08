@@ -30,15 +30,23 @@ async def select_user_accounts(user_id: int):
     return accounts
 
 
-async def select_account_repliers(user_id, account_name):
-    pass
+async def add_replier(name, user_id, payment_info, working, account_name):
+    try:
+        id_ = uuid.uuid4().__str__()
+        replier = ReplierBot(id=id_, name=name, user_id=user_id, payment_info=payment_info,
+                             working=working, account_name=account_name)
+        await replier.create()
+    except UniqueViolationError:
+        raise ValueError
+    # except Exception as e:
+    #     logger.error(f"Unexpected error: {e}")
 
 
 async def delete_account(user_id, name: str):
-    account = await Account.query.where(Account.name == name, Account.user_id == user_id).gino.first()
+    account = await Account.query.where(Account.name == name and Account.user_id == user_id).gino.first()
     await account.delete()
 
 
 async def update_account_keys(user_id, name, hmac_key, hmac_secret):
-    account = await Account.query.where(Account.name == name, Account.user_id == user_id).gino.first()
+    account = await Account.query.where(Account.name == name and Account.user_id == user_id).gino.first()
     account.update(hmac_key=hmac_key, hmac_secret=hmac_secret).apply()

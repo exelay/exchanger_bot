@@ -43,7 +43,7 @@ async def show_selection_buttons(callback: CallbackQuery, account, **kwargs):
 async def select_action(callback: CallbackQuery, account, action):
     user_id = callback.from_user.id
     if action == 'delete':
-        await delete_account(user_id, account)
+        await delete_account(user_id=user_id, name=account)
         await dp.bot.send_message(user_id, "Аккаунт успешно отвязан!")
         markup = await subcategories_keyboard(category='accounts')
         await callback.message.edit_text("⚙️ Main menu")

@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
-from utils.db_api.quick_commands import select_user_accounts, select_account_repliers
+from utils.db_api.quick_commands import select_user_accounts
 from .menu import menu_cd
 
 
@@ -52,5 +52,14 @@ async def user_repliers_markup(user_id, account):
             text="↩️ Назад",
             callback_data=menu_cd.new(level=1, category="accounts", subcategory="0", action="0")
         )
+    )
+    return markup
+
+
+async def creating_actions_markup():
+    markup = InlineKeyboardMarkup(row_width=2).add(
+        InlineKeyboardButton("Создать и запустить", callback_data='create_and_run'),
+        InlineKeyboardButton("Создать незапуская", callback_data='create_and_no_run'),
+        InlineKeyboardButton("Отмена", callback_data='cancel_adding',)
     )
     return markup
