@@ -59,6 +59,7 @@ async def get_payment_info(message: Message, state: FSMContext):
     await message.answer("Что сделать?", reply_markup=markup)
 
 
+# TODO сделать так чтобы статус «запущен» мог быть только у одного автоответчика
 @dp.callback_query_handler(text=['create_and_run', 'create_and_no_run'], state=ReplierData.payment_info)
 async def get_initial_status(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
@@ -70,7 +71,6 @@ async def get_initial_status(callback: CallbackQuery, state: FSMContext):
         text = "Автоответчик создан!"
         data['working'] = False
 
-    print(data)
     await add_replier(**data)
     markup = await categories_keyboard()
     await callback.message.delete_reply_markup()

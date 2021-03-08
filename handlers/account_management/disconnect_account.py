@@ -40,6 +40,7 @@ async def show_selection_buttons(callback: CallbackQuery, account, **kwargs):
     await callback.message.edit_reply_markup(markup)
 
 
+# TODO добавить реверсивное удаление всех привязанных к аккаунту автоответчиков
 async def select_action(callback: CallbackQuery, account, action):
     user_id = callback.from_user.id
     if action == 'delete':
