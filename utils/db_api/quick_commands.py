@@ -30,6 +30,12 @@ async def select_user_accounts(user_id: int):
     return accounts
 
 
+async def select_account_repliers(user_id: int, account):
+    repliers = await ReplierBot.query.where(
+        ReplierBot.user_id == user_id and ReplierBot.account_name == account).gino.all()
+    return repliers
+
+
 async def add_replier(name, user_id, payment_info, working, account_name):
     try:
         id_ = uuid.uuid4().__str__()
@@ -38,8 +44,15 @@ async def add_replier(name, user_id, payment_info, working, account_name):
         await replier.create()
     except UniqueViolationError:
         raise ValueError
-    # except Exception as e:
-    #     logger.error(f"Unexpected error: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+
+
+async def delete_replier(user_id, name, account):
+    replier = await ReplierBot.query.where(
+        ReplierBot.user_id == user_id and ReplierBot.name == name and ReplierBot.account_name == account
+    ).gino.first()
+    await replier.delete()
 
 
 async def delete_account(user_id, name: str):

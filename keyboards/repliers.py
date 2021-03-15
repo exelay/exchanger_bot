@@ -1,20 +1,26 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.callback_data import CallbackData
 
-from utils.db_api.quick_commands import select_user_accounts
+from utils.db_api.quick_commands import select_user_accounts, select_account_repliers
 from .menu import menu_cd
 
 
-repliers_cd = CallbackData("repliers", "level", "account", "replier")
+repliers_cd = CallbackData("repliers", "level", "account", "replier", "action")
 
 
-def make_callback_data(level, account="0", replier="0"):
-    return repliers_cd.new(level=level, account=account, replier=replier)
+def make_callback_data(level, account="0", replier="0", action="0"):
+    return repliers_cd.new(level=level, account=account, replier=replier, action=action)
 
 
 selection_buttons = (
     ("delete", "✂️ Отвязать"),
     ("cancel", "⛔️ Отмена")
+)
+
+actions = (
+    ('delete', '🗑 Удалить'),
+    ('turn_on', '🟢 Включить'),
+    ('turn_off', '🔴 Выключить')
 )
 
 
@@ -50,7 +56,26 @@ async def user_repliers_markup(user_id, account):
     markup.row(
         InlineKeyboardButton(
             text="↩️ Назад",
-            callback_data=menu_cd.new(level=1, category="accounts", subcategory="0", action="0")
+            callback_data=menu_cd.new(level=1, category="replier", subcategory="0", action="0")
+        )
+    )
+    return markup
+
+
+async def replier_actions_markup(account, replier):
+    current_level = 2
+
+    markup = InlineKeyboardMarkup(row_width=2)
+    for action, text in actions:
+        callback_data = make_callback_data(
+            level=current_level + 1, account=account, replier=replier, action=action)
+        markup.insert(
+            InlineKeyboardButton(text=text, callback_data=callback_data)
+        )
+    markup.row(
+        InlineKeyboardButton(
+            text="↩️ Назад",
+            callback_data=menu_cd.new(level=1, category="replier", subcategory="0", action="0")
         )
     )
     return markup
