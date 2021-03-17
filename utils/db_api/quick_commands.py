@@ -55,6 +55,28 @@ async def delete_replier(user_id, name, account):
     await replier.delete()
 
 
+async def turn_replier_status(user_id, name, account):
+    replier = await ReplierBot.query.where(
+        ReplierBot.name == name and ReplierBot.user_id == user_id and ReplierBot.account_name == account
+    ).gino.first()
+    if replier.working:
+        await replier.update(working=False).apply()
+    else:
+        working_replier = await ReplierBot.query.where(
+             ReplierBot.working
+        ).gino.first()
+        if working_replier:
+            await working_replier.update(working=False).apply()
+        await replier.update(working=True).apply()
+
+
+async def replier_is_working(user_id, name, account):
+    replier = await ReplierBot.query.where(
+        ReplierBot.name == name and ReplierBot.user_id == user_id and ReplierBot.account_name == account
+    ).gino.first()
+    return replier.working
+
+
 async def delete_account(user_id, name: str):
     account = await Account.query.where(Account.name == name and Account.user_id == user_id).gino.first()
     await account.delete()

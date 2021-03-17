@@ -3,6 +3,7 @@ from aiogram.types import CallbackQuery
 from loader import dp
 from keyboards.repliers import user_accounts_markup, user_repliers_markup, replier_actions_markup, repliers_cd
 from utils.db_api.quick_commands import delete_replier as del_replier
+from utils.db_api.quick_commands import turn_replier_status
 
 
 async def list_replier_accounts(callback: CallbackQuery):
@@ -37,41 +38,40 @@ async def navigate(callback: CallbackQuery, callback_data):
 
 async def list_account_repliers(callback: CallbackQuery, account, **kwargs):
     user_id = callback.from_user.id
+    print(callback.data)
     markup = await user_repliers_markup(user_id, account)
     await callback.message.edit_text("Автоответчики")
     await callback.message.edit_reply_markup(markup)
 
 
 async def show_replier_actions(callback: CallbackQuery, account, replier, **kwargs):
-    markup = await replier_actions_markup(account, replier)
+    user_id = callback.from_user.id
+    markup = await replier_actions_markup(user_id, account, replier)
     await callback.message.edit_text("Действия")
     await callback.message.edit_reply_markup(markup)
 
 
-async def delete_replier(user_id, account, replier):
+async def delete_replier(user_id, account, replier, **kwargs):
     await del_replier(user_id, replier, account)
     await dp.bot.send_message(user_id, "Автоответчик успешно удалён!")
 
 
-async def turn_on_replier(user_id, account, replier):
-    pass
-
-
-async def turn_off_replier(user_id, account, replier):
-    pass
+async def change_replier_status(user_id, account, replier, callback: CallbackQuery):
+    await turn_replier_status(user_id, replier, account)
+    await show_replier_actions(callback, account, replier)
 
 
 async def do_replier_action(callback: CallbackQuery, account, replier, action):
     user_id = callback.from_user.id
     actions = {
         'delete': delete_replier,
-        'turn_on': turn_on_replier,
-        'turn_off': turn_off_replier,
+        'turn_status': change_replier_status,
     }
-
+    print(callback.data)
     action_func = actions.get(action)
     await action_func(
         user_id,
         account,
         replier,
+        callback=callback,
     )
