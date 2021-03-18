@@ -6,7 +6,7 @@ from states import ReplierData
 from keyboards.cancel_buttons import cancel_markup
 from keyboards.repliers import repliers_cd, user_accounts_markup, creating_actions_markup
 from keyboards.menu import categories_keyboard
-from utils.db_api.quick_commands import add_replier
+from utils.db_api.quick_commands import add_replier, get_account
 
 
 async def create_replier(callback: CallbackQuery):
@@ -36,12 +36,15 @@ async def navigate(callback: CallbackQuery, callback_data: dict, state: FSMConte
         pass
 
 
-async def start_creating(callback: CallbackQuery, account, state):
+async def start_creating(callback: CallbackQuery, account_name, state):
     await callback.message.edit_text(
         "Дайте имя автоответчику (По нему ты будешь его идентифицировать)"
     )
     await callback.message.edit_reply_markup(cancel_markup)
-    await state.update_data(account_name=account)
+    user_id = callback.from_user.id
+    account = await get_account(user_id, account_name)
+    await state.update_data(account_id=account.id)
+    await state.update_data(account_name=account_name)
     await ReplierData.name.set()
 
 

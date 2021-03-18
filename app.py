@@ -9,7 +9,7 @@ async def on_startup(dp):
     from utils.notify_admins import on_startup_notify
 
     logger.info("Connecting to Database...")
-    await db_gino.on_startup(dp)
+    await db_gino.on_startup()
     logger.info("Successfully connected.")
 
     logger.info("Creating sheets...")

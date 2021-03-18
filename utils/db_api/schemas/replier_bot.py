@@ -13,5 +13,6 @@ class ReplierBot(TimedBaseModel):
     payment_info = Column(String(255))
     working = Column(Boolean())
     account_name = Column(String(255))
+    account_id = Column(String(255), db.ForeignKey('accounts.id'))
 
     query: sql.Select

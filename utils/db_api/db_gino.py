@@ -36,6 +36,6 @@ class TimedBaseModel(BaseModel):
                         server_default=db.func.now())
 
 
-async def on_startup(dispatcher: Dispatcher):
+async def on_startup():
     print("Make connection to PostgreSQL")
     await db.set_bind(config.POSTGRES_URI)

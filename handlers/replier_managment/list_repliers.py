@@ -38,7 +38,6 @@ async def navigate(callback: CallbackQuery, callback_data):
 
 async def list_account_repliers(callback: CallbackQuery, account, **kwargs):
     user_id = callback.from_user.id
-    print(callback.data)
     markup = await user_repliers_markup(user_id, account)
     await callback.message.edit_text("Автоответчики")
     await callback.message.edit_reply_markup(markup)

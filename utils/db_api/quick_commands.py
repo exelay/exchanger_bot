@@ -36,11 +36,11 @@ async def select_account_repliers(user_id: int, account):
     return repliers
 
 
-async def add_replier(name, user_id, payment_info, working, account_name):
+async def add_replier(name, user_id, payment_info, working, account_name, account_id):
     try:
         id_ = uuid.uuid4().__str__()
         replier = ReplierBot(id=id_, name=name, user_id=user_id, payment_info=payment_info,
-                             working=working, account_name=account_name)
+                             working=working, account_name=account_name, account_id=account_id)
         await replier.create()
     except UniqueViolationError:
         raise ValueError
@@ -85,3 +85,16 @@ async def delete_account(user_id, name: str):
 async def update_account_keys(user_id, name, hmac_key, hmac_secret):
     account = await Account.query.where(Account.name == name and Account.user_id == user_id).gino.first()
     account.update(hmac_key=hmac_key, hmac_secret=hmac_secret).apply()
+
+
+async def get_replier(account):
+    return await ReplierBot.query.where(ReplierBot.account_name == account and ReplierBot.working).gino.first()
+
+
+async def get_account(user_id, account):
+    return await Account.query.where(Account.user_id == user_id and Account.name == account).gino.first()
+
+
+async def get_all_accounts():
+    accounts = await Account.query.gino.all()
+    return accounts
