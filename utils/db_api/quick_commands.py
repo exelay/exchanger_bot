@@ -87,8 +87,8 @@ async def update_account_keys(user_id, name, hmac_key, hmac_secret):
     account.update(hmac_key=hmac_key, hmac_secret=hmac_secret).apply()
 
 
-async def get_replier(account):
-    return await ReplierBot.query.where(ReplierBot.account_name == account and ReplierBot.working).gino.first()
+async def get_replier(account_id):
+    return await ReplierBot.query.where(ReplierBot.account_id == account_id and ReplierBot.working).gino.first()
 
 
 async def get_account(user_id, account):
