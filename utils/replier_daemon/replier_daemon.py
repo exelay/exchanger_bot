@@ -37,6 +37,18 @@ async def main():
                 client.send_request(f'/api/notifications/mark_as_read/{offer_id}/', 'post')
                 logger.debug(f"Ответил на заявку {offer_id} реквизитами {payment_info}")
 
+
+def run_replier():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(db_gino.on_startup())
+    while True:
+        try:
+            loop.run_until_complete(main())
+            time.sleep(10)
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
+
+
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(db_gino.on_startup())
