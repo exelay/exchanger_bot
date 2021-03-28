@@ -24,10 +24,9 @@ async def main():
             payment_info = replier.payment_info
             reply_msg = (
                 "|\n"
-                "Добрый день.\n"
-                "Реквизиты на оплату:\n\n"
+                "Привет!\n"
+                "Одним платежом на\n\n"
                 f"{payment_info}\n\n"
-                "Спасибо за сделку.\n"
             )
             for offer in new_offers:
                 logger.debug(f"{offer}")
